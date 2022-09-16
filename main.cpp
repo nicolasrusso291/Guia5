@@ -2,6 +2,7 @@
 
 #include "mbed.h"
 #include "arm_book_lib.h"
+//#include "rtos.h"
 
 //=====[Defines]=============================================================
 
@@ -828,17 +829,17 @@ void pcSerialComCommandUpdate( char receivedChar )
         case '1': 
             ledInit();
             strobeLight = ON;
-            thisTread::sleepfor(500ms); 
+            ThisThread::sleep_for(500ms); 
             break;
         case '2': 
             ledInit();
             systemBlockedLed = ON; 
-            thisTread::sleepfor(500ms);
+            ThisThread::sleep_for(500ms);
             break;
         case '3': 
             ledInit();
             incorrectCodeLed = ON; 
-            thisTread::sleepfor(500ms);
+            ThisThread::sleep_for(500ms);
             break;
         //case '4': commandEnterCodeSequence(); break;
         //case '5': commandEnterNewCode(); break;
@@ -1038,10 +1039,10 @@ void smartHomeSystemInit()
 
 void smartHomeSystemUpdate()
 {
-    fireAlarmUpdate();    
+    //fireAlarmUpdate();    
     userInterfaceUpdate();
     pcSerialComUpdate();
-    eventLogUpdate();
+    //eventLogUpdate();
     delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
@@ -1143,8 +1144,8 @@ void userInterfaceInit()
 void userInterfaceUpdate()
 {
     userInterfaceMatrixKeypadUpdate();
-    incorrectCodeIndicatorUpdate();
-    systemBlockedIndicatorUpdate();
+    //incorrectCodeIndicatorUpdate();
+    //systemBlockedIndicatorUpdate();
 }
 
 bool incorrectCodeStateRead()
@@ -1192,7 +1193,7 @@ void userInterfaceMatrixKeypadUpdate()
     char keyReleased = matrixKeypadUpdate();
 
     if( keyReleased != '\0' ) {
-
+        pcSerialComCommandUpdate( keyReleased );
         if( sirenStateRead() && !systemBlockedStateRead() ) {
             if( !incorrectCodeStateRead() ) {
                 codeSequenceFromUserInterface[numberOfCodeChars] = keyReleased;
