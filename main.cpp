@@ -78,6 +78,17 @@ typedef enum{
 
 //=====[Declaration and initialization of public global objects]===============
 
+// Module: Buttons
+
+DigitalIn Button1(D7);
+DigitalIn Button2(D6);
+DigitalIn Button3(D5);
+DigitalIn Button4(D4);
+
+// Module: A/D
+
+AnalogIn AD(A0);
+
 // Module: fire_alarm ---------------------------------
 
 DigitalIn alarmTestButton(BUTTON1); 
@@ -292,6 +303,13 @@ void systemBlockedStateWrite( bool state );
 void systemBlockedIndicatorUpdate();
 void userInterfaceMatrixKeypadUpdate();
 
+// Mostrar A/D, teclado matricial y pulsador
+
+void ledInit();
+void showAD();
+void showTM();
+void showButton();
+
 //=====[Main function, the program entry point after power on or reset]========
 
 int main()
@@ -303,6 +321,25 @@ int main()
 }
 
 //=====[Implementations of public functions]===================================
+
+void ledInit(){
+    strobeLight = OFF;
+    systemBlockedLed = OFF; 
+    incorrectCodeLed = OFF;
+
+}
+
+void showAD(){
+    printf("%f",AD.read());
+}
+
+void showButton(){
+    printf("%d", Button1.read());
+    printf("%d", Button2.read());
+    printf("%d", Button3.read());
+    printf("%d", Button4.read());
+}
+
 
 // Module: code ---------------------------------------
 
@@ -617,6 +654,12 @@ char matrixKeypadUpdate()
             matrixKeypadLastKeyPressed = keyDetected;
             accumulatedDebounceMatrixKeypadTime = 0;
             matrixKeypadState = MATRIX_KEYPAD_DEBOUNCE;
+            char str[5] = "";
+            sprintf ( str, "%c",
+                    matrixKeypadLastKeyPressed);
+            pcSerialComStringWrite(str);
+            showAD();
+            showButton();
         }
         break;
 
@@ -781,34 +824,52 @@ void pcSerialComSaveNewCodeUpdate( char receivedChar )
 void pcSerialComCommandUpdate( char receivedChar )
 {
     switch (receivedChar) {
-        case '1': commandShowCurrentAlarmState(); break;
-        case '2': commandShowCurrentGasDetectorState(); break;
-        case '3': commandShowCurrentOverTemperatureDetectorState(); break;
-        case '4': commandEnterCodeSequence(); break;
-        case '5': commandEnterNewCode(); break;
-        case 'c': case 'C': commandShowCurrentTemperatureInCelsius(); break;
-        case 'f': case 'F': commandShowCurrentTemperatureInFahrenheit(); break;
-        case 's': case 'S': commandSetDateAndTime(); break;
-        case 't': case 'T': commandShowDateAndTime(); break;
-        case 'e': case 'E': commandShowStoredEvents(); break;
-        default: availableCommands(); break;
+        
+        case '1': 
+            ledInit();
+            strobeLight = ON;
+            thisTread::sleepfor(500ms); 
+            break;
+        case '2': 
+            ledInit();
+            systemBlockedLed = ON; 
+            thisTread::sleepfor(500ms);
+            break;
+        case '3': 
+            ledInit();
+            incorrectCodeLed = ON; 
+            thisTread::sleepfor(500ms);
+            break;
+        //case '4': commandEnterCodeSequence(); break;
+        //case '5': commandEnterNewCode(); break;
+        //case 'c': case 'C': commandShowCurrentTemperatureInCelsius(); break;
+        //case 'f': case 'F': commandShowCurrentTemperatureInFahrenheit(); break;
+        //case 's': case 'S': commandSetDateAndTime(); break;
+        //case 't': case 'T': commandShowDateAndTime(); break;
+        //case 'e': case 'E': commandShowStoredEvents(); break;
+        default: 
+            ledInit();
+            matrixKeypadUpdate();
+            availableCommands(); 
+            break;
+        
     } 
 }
 
 void availableCommands()
 {
-    pcSerialComStringWrite( "Available commands:\r\n" );
-    pcSerialComStringWrite( "Press '1' to get the alarm state\r\n" );
-    pcSerialComStringWrite( "Press '2' to get the gas detector state\r\n" );
-    pcSerialComStringWrite( "Press '3' to get the over temperature detector state\r\n" );
-    pcSerialComStringWrite( "Press '4' to enter the code to deactivate the alarm\r\n" );
-    pcSerialComStringWrite( "Press '5' to enter a new code to deactivate the alarm\r\n" );
-    pcSerialComStringWrite( "Press 'f' or 'F' to get lm35 reading in Fahrenheit\r\n" );
-    pcSerialComStringWrite( "Press 'c' or 'C' to get lm35 reading in Celsius\r\n" );
-    pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
-    pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
-    pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
-    pcSerialComStringWrite( "\r\n" );
+    //pcSerialComStringWrite( "Available commands:\r\n" );
+    //pcSerialComStringWrite( "Press '1' to get the alarm state\r\n" );
+    //pcSerialComStringWrite( "Press '2' to get the gas detector state\r\n" );
+    //pcSerialComStringWrite( "Press '3' to get the over temperature detector state\r\n" );
+    //pcSerialComStringWrite( "Press '4' to enter the code to deactivate the alarm\r\n" );
+    //pcSerialComStringWrite( "Press '5' to enter a new code to deactivate the alarm\r\n" );
+    //pcSerialComStringWrite( "Press 'f' or 'F' to get lm35 reading in Fahrenheit\r\n" );
+    //pcSerialComStringWrite( "Press 'c' or 'C' to get lm35 reading in Celsius\r\n" );
+    //pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
+    //pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
+    //pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
+    //pcSerialComStringWrite( "\r\n" );
 }
 
 void commandShowCurrentAlarmState()
