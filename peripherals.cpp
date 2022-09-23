@@ -1,4 +1,16 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "peripherals.h"
+
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
 
 DigitalIn Button1(D7);
 DigitalIn Button2(D6);

@@ -1,4 +1,31 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+#include <string.h>
+
 #include "act6.h"
+
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "peripherals.h"
+#include "smart_home_system.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
+extern UnbufferedSerial uartUsb;
+extern DigitalIn Button1;
+extern DigitalIn Button2;
+extern DigitalIn Button3;
+extern DigitalIn Button4;
+
+extern AnalogIn AD;
+
+extern DigitalOut strobeLight;
+extern DigitalOut incorrectCodeLed;
+extern DigitalOut systemBlockedLed;
+
+extern pcSerialComMode_t pcSerialComMode;
 
 void newUserInterfaceMatrixKeypadUpdate()
 {

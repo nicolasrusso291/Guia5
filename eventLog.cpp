@@ -1,5 +1,21 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "eventLog.h"
 
+#include "act6.h"
+#include "code.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "peripherals.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
+
+typedef struct systemEvent {
+    time_t seconds;
+    char typeOfEvent[EVENT_LOG_NAME_MAX_LENGTH];
+} systemEvent_t;
 
 bool sirenLastState = OFF;
 bool gasLastState   = OFF;

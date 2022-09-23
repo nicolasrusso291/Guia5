@@ -1,4 +1,24 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "keypad.h"
+
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "peripherals.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
+#define MATRIX_KEYPAD_NUMBER_OF_ROWS    4
+#define MATRIX_KEYPAD_NUMBER_OF_COLS    4
+#define DEBOUNCE_KEY_TIME_MS           40
+
+typedef enum {
+    MATRIX_KEYPAD_SCANNING,
+    MATRIX_KEYPAD_DEBOUNCE,
+    MATRIX_KEYPAD_KEY_HOLD_PRESSED
+} matrixKeypadState_t;
 
 // Module: matrix_keypad ------------------------------
 

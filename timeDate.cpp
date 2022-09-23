@@ -1,4 +1,16 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "timeDate.h"
+
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "peripherals.h"
+#include "userInterface.h"
+
 
 // Module: date_and_time ------------------------------
 

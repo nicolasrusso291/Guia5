@@ -1,13 +1,29 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "pcSerial.h"
 
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "peripherals.h"
+#include "smart_home_system.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
+pcSerialComMode_t pcSerialComMode = PC_SERIAL_COMMANDS;
 
 char codeSequenceFromPcSerialCom[CODE_NUMBER_OF_KEYS];
-pcSerialComMode_t pcSerialComMode = PC_SERIAL_COMMANDS;
+
+UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+
 bool codeCompleteFromPcSerialCom = false;
 int numberOfCodeCharsFromPcSerialCom = 0;
 char newCodeSequence[CODE_NUMBER_OF_KEYS];
 
-UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+extern int numberOfCodeChars;
+extern bool codeComplete;
 
 // Module: pc_serial_com ------------------------------
 
@@ -29,7 +45,6 @@ void pcSerialComStringWrite( const char* str )
 {
     uartUsb.write( str, strlen(str) );
 }
-
 
 void availableCommands()
 {

@@ -1,14 +1,28 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "userInterface.h"
+
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "peripherals.h"
+#include "smart_home_system.h"
+#include "timeDate.h"
 
 DigitalOut incorrectCodeLed(LED3);
 DigitalOut systemBlockedLed(LED2);
 
 char codeSequenceFromUserInterface[CODE_NUMBER_OF_KEYS];
+bool codeComplete = false;
+
 bool incorrectCodeState = OFF;
 bool systemBlockedState = OFF;
-bool codeComplete = false;
-int numberOfCodeChars = 0;
+
 int numberOfHashKeyReleased = 0;
+int numberOfCodeChars = 0;
 
 void userInterfaceInit()
 {

@@ -1,4 +1,22 @@
+#include "mbed.h"
+#include "arm_book_lib.h"
+
 #include "smart_home_system.h"
+
+#include "act6.h"
+#include "code.h"
+#include "eventLog.h"
+#include "keypad.h"
+#include "pcSerial.h"
+#include "peripherals.h"
+#include "timeDate.h"
+#include "userInterface.h"
+
+extern DigitalOut strobeLight;
+extern DigitalOut incorrectCodeLed;
+extern DigitalOut systemBlockedLed;
+
+extern pcSerialComMode_t pcSerialComMode;
 
 void userInterfaceUpdate()
 {
@@ -7,9 +25,8 @@ void userInterfaceUpdate()
     systemBlockedIndicatorUpdate();
 }
 
-void newPcSerialComCommandUpdate()
+void newPcSerialComCommandUpdate( char receivedChar )
 {
-    char receivedChar = pcSerialComCharRead();
     if( receivedChar != '\0' ) {
         switch (receivedChar) {
             
@@ -35,6 +52,22 @@ void newPcSerialComCommandUpdate()
         }    
     } 
 }
+
+void newPcSerialComUpdate()
+{
+    char receivedChar = pcSerialComCharRead();
+    if( receivedChar != '\0' ) {
+        switch ( pcSerialComMode ) {
+            case PC_SERIAL_COMMANDS:
+                newPcSerialComCommandUpdate( receivedChar );
+            break;
+            default:
+                pcSerialComMode = PC_SERIAL_COMMANDS;
+            break;
+        }
+    }    
+}
+
 
 void pcSerialComUpdate()
 {
@@ -89,7 +122,7 @@ void smartHomeSystemUpdate()
     //fireAlarmUpdate();    
     //userInterfaceUpdate();
     newUserInterfaceMatrixKeypadUpdate();    
-    //pcSerialComUpdate();
+    newPcSerialComUpdate();
     //eventLogUpdate();
     delay(SYSTEM_TIME_INCREMENT_MS);
 }

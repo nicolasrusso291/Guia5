@@ -1,9 +1,6 @@
 #ifndef PERIPHERALS_H    // To make sure you don't declare the function more than once by including the header multiple times.
 #define PERIPHERALS_H
 
-#include "mbed.h"
-#include "arm_book_lib.h"
-
 // Module: fire_alarm ---------------------------------
 
 #ifndef SYSTEM_TIME_INCREMENT_MS

@@ -1,14 +1,6 @@
 #ifndef EVENTLOG_H    // To make sure you don't declare the function more than once by including the header multiple times.
 #define EVENTLOG_H
 
-#include <string.h>
-#include "mbed.h"
-#include "arm_book_lib.h"
-#include "timeDate.h"
-#include "peripherals.h"
-#include "pcSerial.h"
-#include "code.h"
-
 #ifndef EVENT_LOG_MAX_STORAGE
 #define EVENT_LOG_MAX_STORAGE       100
 #endif
@@ -36,11 +28,6 @@
 #endif
 
 // Module: event_log ----------------------------------
-
-typedef struct systemEvent {
-    time_t seconds;
-    char typeOfEvent[EVENT_LOG_NAME_MAX_LENGTH];
-} systemEvent_t;
 
 // Module: event_log ----------------------------------
 
