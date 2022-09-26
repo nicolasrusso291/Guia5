@@ -61,7 +61,7 @@ void ledInit(){
 }
 
 void showAD(){
-    char str[20]; 
+    char str[50]; 
     sprintf(str, "Potentiometer value: %f\n", AD.read());
     uartUsb.write(str, strlen(str));
 }
@@ -69,6 +69,7 @@ void showAD(){
 void showButton(){
     char str[20]; 
     int buttonPressed = 0;
+    
     if (Button1.read() == ON){
         buttonPressed = 1;
     } else if (Button2.read() == ON){
