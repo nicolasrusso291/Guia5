@@ -15,6 +15,10 @@
 
 #define LM35_NUMBER_OF_AVG_SAMPLES    100
 
+//button
+
+void buttonInit();
+
 // Module: fire_alarm ---------------------------------
 
 void fireAlarmInit();

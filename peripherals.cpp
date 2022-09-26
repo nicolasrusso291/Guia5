@@ -65,6 +65,16 @@ int lm35SampleIndex     = 0;
 
 // Module: fire_alarm ---------------------------------
 
+void buttonInit()
+{
+    
+    Button1.mode(PullDown);
+    Button2.mode(PullDown);
+    Button3.mode(PullDown);
+    Button4.mode(PullDown);
+
+}
+
 void fireAlarmInit()
 {
     temperatureSensorInit();

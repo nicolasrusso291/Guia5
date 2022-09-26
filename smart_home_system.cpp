@@ -45,6 +45,10 @@ void newPcSerialComCommandUpdate( char receivedChar )
                 incorrectCodeLed = ON; 
                 ThisThread::sleep_for(500ms);
                 break;
+            case '4': 
+                ledInit();
+                showAD();
+                break;
             default: 
                 ledInit();
                 matrixKeypadUpdate(); 
@@ -114,7 +118,9 @@ void smartHomeSystemInit()
 {
     userInterfaceInit();
     //fireAlarmInit();
-    pcSerialComInit();
+    //pcSerialComInit();
+    newPcSerialComInit();
+    buttonInit();
 }
 
 void smartHomeSystemUpdate()
@@ -125,4 +131,5 @@ void smartHomeSystemUpdate()
     newPcSerialComUpdate();
     //eventLogUpdate();
     delay(SYSTEM_TIME_INCREMENT_MS);
+    showButton();
 }
